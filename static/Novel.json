@@ -1,0 +1,36 @@
+{
+	"Scene1": {
+		"PAGES": {
+			"Page0": {
+				"Character": "Instruction",
+				"PageText": "This is Mistakes and Memories demo. Press ENTER to proceed to the next page.",
+				"Back": "Empty"
+			},
+			"Page1": {
+				"Character": "Instruction",
+				"PageText": "Please use Chromium or Firefox for the best experience.",
+				"Back": "Empty"
+			},
+			"Page2": {
+				"Character": "???",
+				"PageText": "Everytime you see a child you want to cry.",
+				"Back": "Drone"
+			},
+
+			"Page3": {
+				"Character": "Me",
+				"PageText": " ",
+				"Back": "Empty",
+				"Options": {
+					"Restart?": "Page0",
+                    "End": "Page4"
+				}
+			},
+			"Page4": {
+				"Character": "Me",
+				"PageText": "End of demo",
+				"NextPage": "End"
+			}
+		}
+	}
+}
