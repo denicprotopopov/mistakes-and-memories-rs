@@ -1,148 +1,157 @@
-export class Novel {
-    constructor(textboxSelector, optionsboxSelector, nameboxSelector, dataUrl) {
-        this.$textbox = document.querySelector(textboxSelector)
-        this.$textboxContent = this.$textbox.querySelector('p') 
-        this.$optionsbox = document.querySelector(optionsboxSelector)
-        this.$namebox = document.querySelector(nameboxSelector)
-        this.dataUrl = dataUrl
-        this.json = null
-        this.to = null
-        this.pageNum = 0
-        this.currentPage = null
-        this.isTyping = false
-        this.fullText = ''
-        this.hasOptions = false
-    }
+let $textbox, $textboxContent, $optionsbox, $namebox;
+let json, to;
+let pageNum = 0;
+let currentPage = null;
+let isTyping = false;
+let fullText = '';
+let hasOptions = false;
 
-    async initialize() {
-        await this.grabData()
-        this.attachEventListeners()
-        this.updatePage()
-    }
+async function initializeNovel(textboxSelector, optionsboxSelector, nameboxSelector, dataUrl) {
+    $textbox = document.querySelector(textboxSelector);
+    $textboxContent = $textbox.querySelector('p');
+    $optionsbox = document.querySelector(optionsboxSelector);
+    $namebox = document.querySelector(nameboxSelector);
 
-    async grabData() {
-        const resp = await fetch(this.dataUrl)
-        this.json = await resp.json()
-        this.currentPage = Object.keys(this.json.Scene1.PAGES)[this.pageNum]
-    }
+    await grabData(dataUrl);
+    attachEventListeners();
+    updatePage();
+}
 
-    updatePage() {
-        this.clearContent()
-        this.updateName()
-        this.fullText = this.json.Scene1.PAGES[this.currentPage].PageText
-        this.typeWriter(this.fullText)
-        this.handleOptions()
-    }
+// Fetch data from JSON file
+async function grabData(dataUrl) {
+    const resp = await fetch(dataUrl);
+    json = await resp.json();
+    currentPage = Object.keys(json.Scene1.PAGES)[pageNum];
+}
 
-    clearContent() {
-        this.$namebox.innerText = ''
-        this.$textboxContent.innerText = ''
-    }
+// Update the page content
+function updatePage() {
+    clearContent();
+    updateName();
+    fullText = json.Scene1.PAGES[currentPage].PageText;
+    typeWriter(fullText);
+    handleOptions();
+}
 
-    updateName() {
-        this.$namebox.innerText = this.json.Scene1.PAGES[this.currentPage].Character
-    }
+// Clear the content of textbox and namebox
+function clearContent() {
+    $namebox.innerText = '';
+    $textboxContent.innerText = '';
+}
 
-    typeWriter(txt, i = 0) {
-        this.isTyping = true
-        if (i === 0) {
-            this.$textboxContent.innerHTML = ''
-            clearTimeout(this.to)
-        }
-        const speed = 30;
-        if (i < txt.length) {
-            const c = txt.charAt(i) === ' ' ? '&nbsp;' : txt.charAt(i)
-            this.$textboxContent.innerHTML += c
-            this.to = setTimeout(() => this.typeWriter(txt, i + 1), speed)
-        } else {
-            this.isTyping = false
-        }
-    }
+// Update the character name
+function updateName() {
+    $namebox.innerText = json.Scene1.PAGES[currentPage].Character;
+}
 
-    skipTypewriter() {
-        clearTimeout(this.to)
-        this.$textboxContent.innerHTML = this.fullText
-        this.isTyping = false
+// Typewriter effect for text
+function typeWriter(txt, i = 0) {
+    isTyping = true;
+    if (i === 0) {
+        $textboxContent.innerHTML = '';
+        clearTimeout(to);
     }
+    const speed = 30;
+    if (i < txt.length) {
+        const c = txt.charAt(i) === ' ' ? '&nbsp;' : txt.charAt(i);
+        $textboxContent.innerHTML += c;
+        to = setTimeout(() => typeWriter(txt, i + 1), speed);
+    } else {
+        isTyping = false;
+    }
+}
 
-    handleOptions() {
-        this.$optionsbox.innerHTML = ""
-        const options = this.json.Scene1.PAGES[this.currentPage].Options
-        this.hasOptions = !!options
-        if (options) {
-            Object.keys(options).forEach(k => {
-                const row = document.createElement('div')
-                row.innerHTML = k;
-                row.addEventListener('click', (e) => {
-                    e.stopPropagation() // Prevent event from bubbling up to textbox
-                    this.selectOption(options[k]);
-                });
-                row.addEventListener('touchend', (e) => {
-                    e.preventDefault() // Prevent default touch behavior
-                    e.stopPropagation() // Prevent event from bubbling up to textbox
-                    this.selectOption(options[k])
-                });
-                this.$optionsbox.appendChild(row)
+// Skip typewriter effect
+function skipTypewriter() {
+    clearTimeout(to);
+    $textboxContent.innerHTML = fullText;
+    isTyping = false;
+}
+
+// Handle options display and selection
+function handleOptions() {
+    $optionsbox.innerHTML = "";
+    const options = json.Scene1.PAGES[currentPage].Options;
+    hasOptions = !!options;
+    if (options) {
+        Object.keys(options).forEach(k => {
+            const row = document.createElement('div');
+            row.innerHTML = k;
+            row.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectOption(options[k]);
             });
-        }
-    }
-
-    selectOption(nextPage) {
-        this.currentPage = nextPage
-        this.pageNum = Object.keys(this.json.Scene1.PAGES).indexOf(this.currentPage)
-        this.updatePage()
-    }
-
-    checkPage() {
-        const currentPageData = this.json.Scene1.PAGES[this.currentPage]
-        if (currentPageData.Options) return false
-        if (currentPageData.NextPage === "End") return false
-        return true
-    }
-
-    nextPage() {
-        if (!this.checkPage()) return
-        
-        const currentPageData = this.json.Scene1.PAGES[this.currentPage]
-        if (currentPageData.NextPage) {
-            this.currentPage = currentPageData.NextPage
-        } else {
-            this.pageNum++
-            this.currentPage = Object.keys(this.json.Scene1.PAGES)[this.pageNum]
-        }
-
-        this.updatePage()
-    }
-
-    handleInteraction() {
-        if (this.isTyping) {
-            this.skipTypewriter()
-        } else if (!this.hasOptions) {
-            this.nextPage()
-        }
-    }
-
-    attachEventListeners() {
-        // Keyboard event
-        document.addEventListener('keydown', (e) => {
-            if (e.code === "Enter") {
-                this.handleInteraction()
-            }
-        });
-
-        // Touch event for textbox
-        this.$textbox.addEventListener('touchend', (e) => {
-            e.preventDefault() // Prevent default touch behavior
-            if (!this.hasOptions) {
-                this.handleInteraction()
-            }
-        });
-
-        // Mouse click event for textbox (for desktop compatibility)
-        this.$textbox.addEventListener('click', () => {
-            if (!this.hasOptions) {
-                this.handleInteraction()
-            }
+            row.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                selectOption(options[k]);
+            });
+            $optionsbox.appendChild(row);
         });
     }
 }
+
+// Select an option and move to the next page
+function selectOption(nextPage) {
+    currentPage = nextPage;
+    pageNum = Object.keys(json.Scene1.PAGES).indexOf(currentPage);
+    updatePage();
+}
+
+// Check if the current page allows moving to the next
+function checkPage() {
+    const currentPageData = json.Scene1.PAGES[currentPage];
+    if (currentPageData.Options) return false;
+    if (currentPageData.NextPage === "End") return false;
+    return true;
+}
+
+// Move to the next page
+function nextPage() {
+    if (!checkPage()) return;
+    
+    const currentPageData = json.Scene1.PAGES[currentPage];
+    if (currentPageData.NextPage) {
+        currentPage = currentPageData.NextPage;
+    } else {
+        pageNum++;
+        currentPage = Object.keys(json.Scene1.PAGES)[pageNum];
+    }
+
+    updatePage();
+}
+
+// Handle user interaction (click, tap, or key press)
+function handleInteraction() {
+    if (isTyping) {
+        skipTypewriter();
+    } else if (!hasOptions) {
+        nextPage();
+    }
+}
+
+// Attach event listeners
+function attachEventListeners() {
+    document.addEventListener('keydown', (e) => {
+        if (e.code === "Enter") {
+            handleInteraction();
+        }
+    });
+
+    $textbox.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        if (!hasOptions) {
+            handleInteraction();
+        }
+    });
+
+    $textbox.addEventListener('click', () => {
+        if (!hasOptions) {
+            handleInteraction();
+        }
+    });
+}
+
+// Usage
+const novel = './novel/Novel.json'
+initializeNovel("#textbox", '#optionsbox', "#namebox span", novel);
