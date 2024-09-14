@@ -3,24 +3,23 @@
 		"PAGES": {
 			"Page0": {
 				"Character": "Instruction",
-				"PageText": "This is Mistakes and Memories demo. Press ENTER to proceed to the next page.",
-				"Back": "Empty"
+				"PageText": "This is Mistakes and Memories demo. Press ENTER to proceed to the next page."
 			},
 			"Page1": {
 				"Character": "Instruction",
 				"PageText": "Please use Chromium or Firefox for the best experience.",
-				"Back": "Empty"
+				"Back": "One"
 			},
 			"Page2": {
 				"Character": "???",
 				"PageText": "Everytime you see a child you want to cry.",
-				"Back": "Drone"
+				"Back": "Two"
 			},
 
 			"Page3": {
 				"Character": "Me",
 				"PageText": " ",
-				"Back": "Empty",
+				"Back": "One",
 				"Options": {
 					"Restart?": "Page0",
                     "End": "Page4"

@@ -1,3 +1,6 @@
+// import { onPlayerJoin, insertCoin, isHost, myPlayer } from "playroomkit";
+import { switchToBlueScene, switchToRedScene } from "../script";
+
 let $textbox, $textboxContent, $optionsbox, $namebox;
 let json, to;
 let pageNum = 0;
@@ -5,6 +8,8 @@ let currentPage = null;
 let isTyping = false;
 let fullText = '';
 let hasOptions = false;
+
+// await insertCoin({gameId: "2nSwHxLsGyK1vlvNgBPT"});
 
 async function initializeNovel(textboxSelector, optionsboxSelector, nameboxSelector, dataUrl) {
     $textbox = document.querySelector(textboxSelector);
@@ -119,6 +124,28 @@ function nextPage() {
     }
 
     updatePage();
+
+    if (json.Scene1.PAGES[currentPage].hasOwnProperty('Back')) {
+        switch (json.Scene1.PAGES[currentPage].Back) {
+            case "One":
+                switchToBlueScene();
+                break;
+            case "Two":
+                switchToRedScene();
+                break;
+            case "Shed":
+                getShedScene();
+                break;
+            case "City":
+                getCityScene();
+                break;
+            case "Empty":
+                getEmptyScene();
+                break;
+            default:
+                return;
+        }
+    } else return;
 }
 
 // Handle user interaction (click, tap, or key press)
@@ -151,7 +178,6 @@ function attachEventListeners() {
         }
     });
 }
-
 // Usage
 const novel = './novel/Novel.json'
 initializeNovel("#textbox", '#optionsbox', "#namebox span", novel);
