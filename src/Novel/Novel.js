@@ -1,5 +1,5 @@
-// import { onPlayerJoin, insertCoin, isHost, myPlayer } from "playroomkit";
-import { switchToBlueScene, switchToRedScene } from "../script";
+
+import { getSceneOne, getSceneTwo, getSceneArmory, getSceneCity } from "../script";
 
 let $textbox, $textboxContent, $optionsbox, $namebox;
 let json, to;
@@ -8,8 +8,6 @@ let currentPage = null;
 let isTyping = false;
 let fullText = '';
 let hasOptions = false;
-
-// await insertCoin({gameId: "2nSwHxLsGyK1vlvNgBPT"});
 
 async function initializeNovel(textboxSelector, optionsboxSelector, nameboxSelector, dataUrl) {
     $textbox = document.querySelector(textboxSelector);
@@ -128,16 +126,16 @@ function nextPage() {
     if (json.Scene1.PAGES[currentPage].hasOwnProperty('Back')) {
         switch (json.Scene1.PAGES[currentPage].Back) {
             case "One":
-                switchToBlueScene();
+                getSceneOne();
                 break;
             case "Two":
-                switchToRedScene();
+                getSceneTwo();
                 break;
-            case "Shed":
-                getShedScene();
+            case "Armory":
+                getSceneArmory();
                 break;
             case "City":
-                getCityScene();
+                getSceneCity();
                 break;
             case "Empty":
                 getEmptyScene();

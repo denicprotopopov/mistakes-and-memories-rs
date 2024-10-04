@@ -17,6 +17,18 @@
 			},
 
 			"Page3": {
+				"Character": "???",
+				"PageText": "Coooool right??????",
+				"Back": "Armory"
+			},
+
+			"Page4": {
+				"Character": "???",
+				"PageText": "Треш и ужас",
+				"Back": "City"
+			},
+
+			"Page5": {
 				"Character": "Me",
 				"PageText": " ",
 				"Back": "One",
@@ -25,7 +37,7 @@
                     "End": "Page4"
 				}
 			},
-			"Page4": {
+			"Page6": {
 				"Character": "Me",
 				"PageText": "End of demo",
 				"NextPage": "End"
