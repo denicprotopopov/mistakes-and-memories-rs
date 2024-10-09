@@ -3,6 +3,7 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
 import { getMixers } from './loader'
+import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
 
 const stats = new Stats()
 document.body.appendChild(stats.dom)
@@ -29,6 +30,8 @@ window.addEventListener('touchmove', (event) => {
     }
 });
 
+
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
@@ -51,6 +54,24 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.z = 3
 scene.add(camera)
 
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+scene.add(ambientLight)
+sceneRed.add(ambientLight)
+sceneCity.add(ambientLight)
+sceneArmory.add(ambientLight)
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9)
+const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.9)
+const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.9)
+directionalLight.position.set(5, 10, 7.5);
+directionalLight3.position.set(25, -5, 7)
+directionalLight2.position.set(-25, -15, -10)
+scene.add(directionalLight)
+sceneRed.add(directionalLight)
+sceneCity.add(directionalLight)
+sceneArmory.add(directionalLight2)
+sceneCity.add(directionalLight3)
+
 const renderer = new THREE.WebGLRenderer({
 	canvas: canvas
 })
@@ -61,21 +82,36 @@ const effectComposer = new EffectComposer(renderer)
 effectComposer.setSize(sizes.width, sizes.height)
 
 
+
 const renderPass1 = new RenderPass(scene, camera)
 const renderPass2 = new RenderPass(sceneRed, camera)
 const renderPassArmory = new RenderPass(sceneArmory, camera)
 const renderPassCity = new RenderPass(sceneCity, camera)
 
+const renderPixelatedPass = new RenderPixelatedPass(3, scene, camera);
+renderPixelatedPass.normalEdgeStrength = 0
+renderPixelatedPass.depthEdgeStrength = 0
+const renderPixelatedPass2 = new RenderPixelatedPass(3, sceneRed, camera);
+renderPixelatedPass2.normalEdgeStrength = 0
+renderPixelatedPass2.depthEdgeStrength = 0
+const renderPixelatedPass3 = new RenderPixelatedPass(3, sceneArmory, camera);
+renderPixelatedPass3.normalEdgeStrength = 0
+renderPixelatedPass3.depthEdgeStrength = 0
+const renderPixelatedPass4 = new RenderPixelatedPass(3, sceneCity, camera);
+renderPixelatedPass4.normalEdgeStrength = 0
+renderPixelatedPass4.depthEdgeStrength = 0
+
 export const getSceneOne = () => {
 	disposeAll()
-	effectComposer.addPass(renderPass1)
+	// effectComposer.addPass(renderPass1)
+	effectComposer.addPass(renderPixelatedPass)
 	console.log(effectComposer);	
 	console.log('blue cube');
 }
 
 export const getSceneTwo = () => {
 	disposeAll()
-	effectComposer.addPass(renderPass2)
+	effectComposer.addPass(renderPixelatedPass2)
 	console.log(effectComposer);	
 	console.log('red cube');
 	
@@ -83,7 +119,8 @@ export const getSceneTwo = () => {
 
 export const getSceneArmory = () => {
 	disposeAll()
-	effectComposer.addPass(renderPassArmory)
+	effectComposer.addPass(renderPixelatedPass3)
+	// effectComposer.addPass(ditherPass);
 	console.log(effectComposer);	
 	console.log('armory');
 	
@@ -91,7 +128,8 @@ export const getSceneArmory = () => {
 
 export const getSceneCity = () => {
 	disposeAll()
-	effectComposer.addPass(renderPassCity)
+	effectComposer.addPass(renderPixelatedPass4)
+	// effectComposer.addPass(ditherPass);
 	console.log(effectComposer);	
 	console.log('city');
 	

@@ -16,6 +16,7 @@ html, body {
 }
 
 .webgl {
+    image-rendering: pixelated;
     position: fixed;
     top: 0;
     left: 0;
