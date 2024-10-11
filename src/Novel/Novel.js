@@ -274,7 +274,7 @@ function nextPage() {
         getSceneControlRoom();
         break;
       case "Dog":
-        getSceneDog();
+        getSceneDrone();
         break;
       case "Drone":
         getSceneDrone();
