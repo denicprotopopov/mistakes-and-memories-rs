@@ -154,7 +154,7 @@ html, body {
     height: 30%;
     padding: 0.5rem;
     overflow: auto;
-    word-break: normal;
+    word-break: break-word;
     
 }
 
