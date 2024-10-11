@@ -154,7 +154,8 @@ html, body {
     height: 30%;
     padding: 0.5rem;
     overflow: auto;
-    word-break: break-word;
+    word-break: normal;
+    
 }
 
 #optionsbox {

@@ -101,7 +101,7 @@ async function setupPlayerSound() {
   // Delay playback by 10 seconds using setTimeout
   setTimeout(() => {
     player.start();
-  }, 10000);
+  }, 3000);
 
   return player;
 }
@@ -131,12 +131,16 @@ onValue(playersRef, async (snapshot) => {
 });
 
 // Ensure Tone.js audio context is properly started after user interaction
-document.body.addEventListener('click', async () => {
+function startAudioContext() {
   if (Tone.context.state !== 'running') {
-    await Tone.start();
-    console.log('Audio context started');
+    Tone.start().then(() => {
+      console.log('Audio context started');
+    });
   }
-});
+}
+
+document.body.addEventListener('click', startAudioContext);
+document.body.addEventListener('touchstart', startAudioContext);
 
 // Initialize the visual novel
 async function initializeNovel(textboxSelector, optionsboxSelector, nameboxSelector, dataUrl) {
