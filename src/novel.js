@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, set, remove, onDisconnect } from 'firebase/database';
 import * as Tone from 'tone';
-import { getSceneOne, getSceneTwo, getSceneArmory, getSceneCity, getSceneMetro, getSceneTerrain, getSceneControlRoom, getSceneDog, getSceneDrone, getSceneBrownstone, getSceneTerrain2 } from "../script";
+import { getSceneOne, getSceneTwo, getSceneArmory, getSceneCity, getSceneMetro, getSceneTerrain, getSceneControlRoom, getSceneDog, getSceneDrone, getSceneBrownstone, getSceneTerrain2 } from "./script";
 
 let $textbox, $textboxContent, $optionsbox, $namebox;
 let json, to;
