@@ -66,13 +66,9 @@ async function setupBackgroundSound() {
   await Tone.start(); 
   const backgroundPlayer = new Tone.Player({
     url: backgroundSoundUrl,
-    autostart: false,
+    autostart: true,
     loop: true
   }).connect(backgroundVolume);
-
-  setTimeout(() => {
-    backgroundPlayer.start();
-  }, 10000);
 }
 setupBackgroundSound();
 
