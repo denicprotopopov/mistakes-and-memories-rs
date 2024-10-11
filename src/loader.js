@@ -42,11 +42,6 @@ const cubeMapLoader = new THREE.CubeTextureLoader()
                 child.material.envMap = cubeMapLoader
             }
         })
-        sceneDog.traverse((child) => {
-            if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
-                child.material.envMap = cubeMapLoader
-            }
-        })
 
         sceneDrone.traverse((child) => {
             if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
@@ -91,16 +86,6 @@ gltfLoader.load(
 	}
 )
 
-gltfLoader.load(
-	'/model/robot.glb',
-	(gltf) => {
-		gltf.scene.scale.set(0.25, 0.25, 0.25)
-		gltf.scene.position.y = -3
-		sceneDog.add(gltf.scene)
-
-		updateAllMaterial()
-	}
-)
 
 gltfLoader.load(
 	'/model/armory.glb',
