@@ -61,14 +61,18 @@ const soundUrl = '/mm_voice.wav'; // replace with your actual sound file URL
 const backgroundSoundUrl = '/mm_drone.wav'; // replace with your actual background sound file URL
 
 // Setup background sound
-let backgroundVolume = new Tone.Volume(-15).toDestination(); // Control background sound volume
+let backgroundVolume = new Tone.Volume(-5).toDestination(); // Control background sound volume
 async function setupBackgroundSound() {
-  await Tone.start();
+  await Tone.start(); 
   const backgroundPlayer = new Tone.Player({
     url: backgroundSoundUrl,
-    autostart: true,
+    autostart: false,
     loop: true
   }).connect(backgroundVolume);
+
+  setTimeout(() => {
+    backgroundPlayer.start();
+  }, 10000);
 }
 setupBackgroundSound();
 
