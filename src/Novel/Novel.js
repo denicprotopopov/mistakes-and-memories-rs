@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, set, remove, onDisconnect } from 'firebase/database';
 import * as Tone from 'tone';
-import { getSceneOne, getSceneTwo, getSceneArmory, getSceneCity } from "../script";
+import { getSceneOne, getSceneTwo, getSceneArmory, getSceneCity, getSceneMetro, getSceneTerrain, getSceneControlRoom, getSceneDog, getSceneDrone, getSceneBrownstone, getSceneTerrain2 } from "../script";
 
 let $textbox, $textboxContent, $optionsbox, $namebox;
 let json, to;
@@ -255,20 +255,35 @@ function nextPage() {
 
   if (json.Scene1.PAGES[currentPage].hasOwnProperty('Back')) {
     switch (json.Scene1.PAGES[currentPage].Back) {
-      case "One":
-        getSceneOne();
-        break;
-      case "Two":
-        getSceneTwo();
-        break;
       case "Armory":
         getSceneArmory();
         break;
       case "City":
         getSceneCity();
         break;
+      case "Metro":
+        getSceneMetro();
+        break;
+      case "Terrain":
+        getSceneTerrain();
+        break;
+      case "Terrain2":
+        getSceneTerrain2();
+        break;
+      case "Control":
+        getSceneControlRoom();
+        break;
+      case "Dog":
+        getSceneDog();
+        break;
+      case "Drone":
+        getSceneDrone();
+        break;
+      case "Brownstone":
+        getSceneBrownstone();
+        break;
       case "Empty":
-        getEmptyScene();
+        getSceneOne();
         break;
       default:
         return;
