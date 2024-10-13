@@ -188,16 +188,34 @@ function typeWriter(txt, i = 0) {
     $textboxContent.innerHTML = '';
     clearTimeout(to);
   }
-  const speed = 30;
+
+  const speed = 30; // Adjust the speed to make it slower if needed
+  let currentLine = $textboxContent.innerHTML;
+
   if (i < txt.length) {
-    const c = txt.charAt(i) === ' ' ? '&nbsp;' : txt.charAt(i);
-    $textboxContent.innerHTML += c;
+    // Get the next character to add
+    let char = txt.charAt(i);
+    
+    // Add the character to the current content
+    $textboxContent.innerHTML += char;
+    
+    // After adding the character, check if the word breaks
+    const lastWord = $textboxContent.innerHTML.split(' ').pop(); // Get the last word being typed
+    
+    // If the width exceeds the container and the character is not a space
+    if ($textboxContent.scrollWidth > $textboxContent.clientWidth && char !== ' ') {
+      // Remove the last word from the current line and move it to the next line
+      $textboxContent.innerHTML = currentLine + '<br>' + lastWord;
+    } else {
+      currentLine += char; // Keep adding characters to the current line
+    }
+
+    // Delay the next character being typed
     to = setTimeout(() => typeWriter(txt, i + 1), speed);
   } else {
     isTyping = false;
   }
 }
-
 // Skip typewriter effect
 function skipTypewriter() {
   clearTimeout(to);
