@@ -3,7 +3,7 @@
 		"PAGES": {
 			"Page0": {
 				"Character": "Инструкция",
-				"PageText": "Это Mistakes and Memories. Нажмите ENTER, или на панель с текстом, чтобы продолжать.",
+				"PageText": "Это Mistakes and Memories. Кликните на панель с текстом, чтобы продолжать. Или нажимайте Enter.",
 				"Options": {
 					"Начать": "Page1"
 			},
